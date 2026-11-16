@@ -3,6 +3,16 @@ import dotenv from 'dotenv';
 // Carga las variables definidas en el archivo .env
 dotenv.config();
 
+/**
+ * Lee una variable obligatoria: si falta, el servidor no arranca
+ * y muestra qué variable hay que agregar al .env.
+ */
+function requerida(nombre: string): string {
+  const valor = process.env[nombre];
+  if (!valor) throw new Error(`Falta la variable de entorno ${nombre} en el archivo .env`);
+  return valor;
+}
+
 // Interfaz con las variables de entorno que usa la aplicación
 interface Env {
   port: number;
@@ -14,6 +24,10 @@ interface Env {
     user: string;
     password: string;
     name: string;
+  };
+  jwt: {
+    secreto: string;
+    expiraEn: string;
   };
 }
 
@@ -28,5 +42,9 @@ export const env: Env = {
     user: process.env.DB_USER ?? 'postgres',
     password: process.env.DB_PASSWORD ?? '',
     name: process.env.DB_NAME ?? 'globalnews',
+  },
+  jwt: {
+    secreto: requerida('JWT_SECRET'),
+    expiraEn: process.env.JWT_EXPIRES_IN ?? '8h',
   },
 };
