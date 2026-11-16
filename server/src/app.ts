@@ -1,6 +1,7 @@
 import express, { type Application } from 'express';
 import cors from 'cors';
 import { env } from './config/env.js';
+import './config/zod.js'; // mensajes de validación en español
 import rutas from './routes/index.js';
 import { noEncontrado } from './middlewares/noEncontrado.js';
 import { manejadorErrores } from './middlewares/manejadorErrores.js';

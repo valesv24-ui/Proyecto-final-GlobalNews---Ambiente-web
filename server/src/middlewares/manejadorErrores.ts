@@ -1,6 +1,8 @@
 import type { NextFunction, Request, Response } from 'express';
 import { env } from '../config/env.js';
+import { ZodError } from 'zod';
 import { AppError } from '../utils/errores.js';
+import { formatearErroresZod } from './validar.js';
 import type { RespuestaError } from '../types/api.js';
 
 /**
@@ -47,6 +49,11 @@ export function manejadorErrores(error: unknown, req: Request, res: Response, _n
     codigoHttp = error.codigoHttp;
     mensaje = error.message;
     detalles = error.detalles;
+  } else if (error instanceof ZodError) {
+    // Por si un servicio valida con esquema.parse() en vez de usar el middleware validar()
+    codigoHttp = 400;
+    mensaje = 'Los datos enviados no son válidos';
+    detalles = formatearErroresZod(error);
   } else if (esJsonInvalido(error)) {
     codigoHttp = 400;
     mensaje = 'El cuerpo de la solicitud no es un JSON válido';
