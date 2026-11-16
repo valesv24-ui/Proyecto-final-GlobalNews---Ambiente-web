@@ -1,0 +1,19 @@
+# Dependencias
+node_modules/
+
+# Compilados
+dist/
+build/
+
+# Variables de entorno (no subir credenciales)
+.env
+
+# Archivos subidos por los usuarios
+server/uploads/*
+!server/uploads/.gitkeep
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+.vscode/
+*.log
