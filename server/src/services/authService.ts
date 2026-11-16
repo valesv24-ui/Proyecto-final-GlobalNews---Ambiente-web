@@ -3,7 +3,7 @@ import jwt, { type SignOptions } from 'jsonwebtoken';
 import { env } from '../config/env.js';
 import * as usuarioModel from '../models/usuarioModel.js';
 import * as planModel from '../models/planModel.js';
-import { ErrorConflicto, ErrorNoAutenticado, ErrorSolicitud } from '../utils/errores.js';
+import { ErrorConflicto, ErrorNoAutenticado, ErrorNoEncontrado, ErrorSolicitud } from '../utils/errores.js';
 import type { RespuestaAuth, TokenPayload, UsuarioBD, UsuarioPublico } from '../types/usuario.js';
 import type { DatosLogin, DatosRegistro } from '../validators/authValidator.js';
 
@@ -60,4 +60,12 @@ export async function iniciarSesion(datos: DatosLogin): Promise<RespuestaAuth> {
   }
 
   return { token: generarToken(usuario), usuario: aUsuarioPublico(usuario) };
+}
+
+/** Datos actualizados del usuario que inició sesión (se leen de la BD, no del token) */
+export async function obtenerPerfil(id: number): Promise<UsuarioPublico> {
+  const usuario = await usuarioModel.buscarPorId(id);
+  if (!usuario) throw new ErrorNoEncontrado('El usuario ya no existe');
+  if (!usuario.activo) throw new ErrorNoAutenticado('La cuenta está desactivada');
+  return aUsuarioPublico(usuario);
 }

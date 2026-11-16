@@ -1,4 +1,5 @@
 import type { Request, Response } from 'express';
+import { ErrorNoAutenticado } from '../utils/errores.js';
 import * as authService from '../services/authService.js';
 import type { DatosLogin, DatosRegistro } from '../validators/authValidator.js';
 
@@ -18,4 +19,11 @@ export async function registro(req: Request, res: Response): Promise<void> {
 export async function login(req: Request, res: Response): Promise<void> {
   const resultado = await authService.iniciarSesion(req.body as DatosLogin);
   res.json({ ok: true, ...resultado });
+}
+
+// GET /api/auth/perfil (requiere token)
+export async function perfil(req: Request, res: Response): Promise<void> {
+  if (!req.usuario) throw new ErrorNoAutenticado();
+  const usuario = await authService.obtenerPerfil(req.usuario.id);
+  res.json({ ok: true, usuario });
 }
