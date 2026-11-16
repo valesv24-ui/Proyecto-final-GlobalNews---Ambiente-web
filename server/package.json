@@ -7,17 +7,21 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "db:schema": "tsx scripts/ejecutarSql.ts database/schema.sql"
+    "db:schema": "tsx scripts/ejecutarSql.ts database/schema.sql",
+    "db:seed": "tsx scripts/seed.ts",
+    "db:reset": "npm run db:schema && npm run db:seed"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "dotenv": "^18.0.10",
     "express": "^5.3.0",
     "pg": "^8.23.1"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/node": "^26.6.6",
