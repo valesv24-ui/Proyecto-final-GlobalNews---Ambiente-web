@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+/*
+ * Paleta de GlobalNews (PROVISIONAL).
+ * La Persona C define la paleta final y solo tiene que cambiar estos valores:
+ * todas las pantallas usan estas clases (bg-primario, text-secundario, etc.).
+ */
+@theme {
+  --color-primario: #1e3a8a;
+  --color-primario-claro: #3b82f6;
+  --color-secundario: #f59e0b;
+  --color-fondo: #f8fafc;
+  --color-texto: #0f172a;
+  --color-exito: #16a34a;
+  --color-error: #dc2626;
+  --color-advertencia: #d97706;
+  --color-info: #0284c7;
+}
+
+body {
+  @apply bg-fondo text-texto;
+}
